@@ -19,12 +19,12 @@ public:
 	// N.B. the memory order is of no use to us in any of the functions that use it
 	
 	// Constructors
-	mutex_atomic() noexcept = default;
-	constexpr mutex_atomic(T desired) noexcept :data(desired) {};
+	mutex_atomic() = default;
+	constexpr mutex_atomic(T desired) :data(desired) {};
 	mutex_atomic(const mutex_atomic&) = delete;
 
 	// Operator=
-	T operator=( T desired ) noexcept
+	T operator=( T desired )
 	{
 		store(desired);
 		return desired;
@@ -32,14 +32,14 @@ public:
 	mutex_atomic& operator=( const mutex_atomic& ) = delete;
 
 	// Store
-	void store( T desired, std::memory_order order = std::memory_order_seq_cst ) noexcept
+	void store( T desired, std::memory_order order = std::memory_order_seq_cst )
 	{
 		const std::lock_guard<std::mutex> lock(m);
 		data = desired;
 	}
 
 	// Load
-	T load( std::memory_order order = std::memory_order_seq_cst ) const noexcept
+	T load( std::memory_order order = std::memory_order_seq_cst ) const
 	{
 		const std::lock_guard<std::mutex> lock(m);
 		return data;
@@ -52,7 +52,7 @@ public:
 	}
 
 	// Exchange
-	T exchange( T desired, std::memory_order order = std::memory_order_seq_cst ) noexcept
+	T exchange( T desired, std::memory_order order = std::memory_order_seq_cst )
 	{
 		const std::lock_guard<std::mutex> lock(m);
 		T temp = data;
